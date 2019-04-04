@@ -13,7 +13,7 @@ This repository was originally forked from `@henridwyer`, many thanks to him for
 
 Use this image with a `Dockerfile` such as:
 ```Dockerfile
-FROM staticfloat/nginx-certbot
+FROM rogiel/nginx-certbot
 COPY *.conf /etc/nginx/conf.d/
 ```
 
@@ -24,6 +24,8 @@ server {
     server_name         server.company.com;
     ssl_certificate     /etc/letsencrypt/live/server.company.com/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/server.company.com/privkey.pem;
+
+    include /etc/nginx/certbot.conf;
 
     location / {
         ...
@@ -45,31 +47,3 @@ services:
             - CERTBOT_EMAIL=owner@company.com
   ...
 ```
-
-# Changelog
-
-### 0.8
-- Ditch cron, it never liked me anway.  Just use `sleep` and a `while` loop instead.
-
-### 0.7
-- Complete rewrite, build this image on top of the `nginx` image, and run `cron`/`certbot` alongside `nginx` so that we can have nginx configs dynamically enabled as we get SSL certificates.
-
-### 0.6
-- Add `nginx_auto_enable.sh` script to `/etc/letsencrypt/` so that users can bring nginx up before SSL certs are actually available.
-
-### 0.5
-- Change the name to `docker-certbot-cron`, update documentation, strip out even more stuff I don't care about.
-
-### 0.4
-- Rip out a bunch of stuff because `@staticfloat` is a monster, and likes to do things his way
-
-### 0.3
-- Add support for webroot mode.
-- Run certbot once with all domains.
-
-### 0.2
-- Upgraded to use certbot client
-- Changed image to use alpine linux
-
-### 0.1
-- Initial release

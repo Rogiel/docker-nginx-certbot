@@ -1,5 +1,5 @@
 FROM nginx
-LABEL maintainer="Elliot Saba <staticfloat@gmail.com>, Valder Gallo <valergallo@gmail.com>, Bruno Zell <bruno.zzell@gmail.com>"
+LABEL maintainer="Rogiel Sulzbach <rogiel@rogiel.com>, Elliot Saba <staticfloat@gmail.com>, Valder Gallo <valergallo@gmail.com>, Bruno Zell <bruno.zzell@gmail.com>"
 
 VOLUME /etc/letsencrypt
 EXPOSE 80
@@ -26,7 +26,7 @@ RUN mkdir -p /scripts/startup
 # Copy in default nginx configuration (which just forwards ACME requests to
 # certbot, or redirects to HTTPS, but has no HTTPS configurations by default).
 RUN rm -f /etc/nginx/conf.d/*
-COPY nginx_conf.d/ /etc/nginx/conf.d/
+COPY nginx_conf.d/certbot.conf /etc/nginx/certbot.conf
 
 ENTRYPOINT []
 CMD ["/bin/bash", "/scripts/entrypoint.sh"]
