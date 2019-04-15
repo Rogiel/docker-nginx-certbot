@@ -1,4 +1,5 @@
 #!/bin/sh
+certbot_server_port=$1
 
 # Source in util.sh so we can have our nice tools
 . $(cd $(dirname $0); pwd)/util.sh
@@ -16,7 +17,7 @@ for domain in $(parse_domains); do
     if is_renewal_required $domain; then
         # Renewal required for this doman.
         # Last one happened over a week ago (or never)
-        if ! get_certificate $domain $CERTBOT_EMAIL; then
+        if ! get_certificate $domain $CERTBOT_EMAIL $certbot_server_port; then
             error "Cerbot failed for $domain. Check the logs for details."
             exit_code=1
         fi

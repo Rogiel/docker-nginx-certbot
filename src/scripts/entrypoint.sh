@@ -7,6 +7,9 @@ trap "kill 0" EXIT
 # Source in util.sh so we can have our nice tools
 . $(cd $(dirname $0); pwd)/util.sh
 
+echo "Run certbot"
+/scripts/run_certbot.sh 80
+
 # Immediately run auto_enable_configs so that nginx is in a runnable state
 auto_enable_configs
 
@@ -25,13 +28,13 @@ echo "Done with startup"
 
 # Instead of trying to run `cron` or something like that, just sleep and run `certbot`.
 while [ true ]; do
-    echo "Run certbot"
-    /scripts/run_certbot.sh
-
     # Sleep for 1 week
     sleep 604810 &
     SLEEP_PID=$!
 
     # Wait on sleep so that when we get ctrl-c'ed it kills everything due to our trap
     wait "$SLEEP_PID"
+
+    echo "Run certbot"
+    /scripts/run_certbot.sh 1337
 done
